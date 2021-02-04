@@ -1,0 +1,1480 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="1/18/2021 9:30:04 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="BASIT-PC"
+  DTS:CreatorName="BASIT-PC\basit halim"
+  DTS:DTSID="{F14035AC-B8BA-4655-BD04-09886886D771}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.132"
+  DTS:LocaleID="16393"
+  DTS:ObjectName="Package4"
+  DTS:PackageType="5"
+  DTS:VersionBuild="4"
+  DTS:VersionGUID="{CF854CCF-A87A-4655-9B82-D97110C00563}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.AMAZON_ORDER_SOURCE1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{C3C275BB-673C-4BAF-AF54-085C04867BB5}"
+      DTS:ObjectName="BASIT-PC\SQLEXPRESS.AMAZON_ORDER_SOURCE1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=BASIT-PC\SQLEXPRESS;Initial Catalog=AMAZON_ORDER_SOURCE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.AMAZON_ORDER_SOURCE1 1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7B5EEC44-96A8-4090-AB71-3350A660AC22}"
+      DTS:ObjectName="BASIT-PC\SQLEXPRESS.AMAZON_ORDER_SOURCE1 1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=BASIT-PC\SQLEXPRESS;Initial Catalog=AMAZON_ORDER_SOURCE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{8CCA0040-61CF-437E-ACD4-5CC73FA72D0A}"
+      DTS:ObjectName="BASIT-PC\SQLEXPRESS.TRIAL1">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=BASIT-PC\SQLEXPRESS;Initial Catalog=TRIAL;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\fact table Data Flow Task"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{CD930D20-E021-4518-9AB1-172A66A660A5}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="fact table Data Flow Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\fact table Data Flow Task\Amazon_OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Amazon_OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT        Customers.customer_id, Products.product_id, Orders.order_id, Orders.date_id, Orders.order_date, MAX(Orders_items.order_item_quantity * Orders_items.order_item_product_price) AS order_price_subtotal, 
+                         SUM(Orders_items.order_item_quantity) AS order_quantity_total
+FROM            Orders INNER JOIN
+                         Customers ON Orders.order_customer_id = Customers.customer_id INNER JOIN
+                         Orders_items ON Orders.order_id = Orders_items.order_item_order_id INNER JOIN
+                         Products ON Orders_items.order_item_product_id = Products.product_id CROSS JOIN
+                         Departments
+GROUP BY Customers.customer_id, Products.product_id, Orders.order_id, Orders.date_id, Orders.order_date
+ORDER BY Customers.customer_id</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.AMAZON_ORDER_SOURCE1 1]"
+                  connectionManagerRefId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.AMAZON_ORDER_SOURCE1 1]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[customer_id]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[customer_id]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[customer_id]"
+                      name="customer_id"
+                      precision="18"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[product_id]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[product_id]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[product_id]"
+                      name="product_id"
+                      precision="18"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_id]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_id]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_id]"
+                      name="order_id"
+                      precision="18"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[date_id]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[date_id]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[date_id]"
+                      name="date_id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_date]"
+                      dataType="dbDate"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_date]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_date]"
+                      name="order_date"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_price_subtotal]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_price_subtotal]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_price_subtotal]"
+                      name="order_price_subtotal"
+                      precision="37"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_quantity_total]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_quantity_total]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_quantity_total]"
+                      name="order_quantity_total"
+                      precision="38"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[customer_id]"
+                      dataType="numeric"
+                      name="customer_id"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[product_id]"
+                      dataType="numeric"
+                      name="product_id"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_id]"
+                      dataType="numeric"
+                      name="order_id"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[date_id]"
+                      dataType="i4"
+                      name="date_id" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_date]"
+                      dataType="dbDate"
+                      name="order_date" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_price_subtotal]"
+                      dataType="numeric"
+                      name="order_price_subtotal"
+                      precision="37" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[order_quantity_total]"
+                      dataType="numeric"
+                      name="order_quantity_total"
+                      precision="38" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[customer_id]"
+                      dataType="numeric"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[customer_id]"
+                      name="customer_id"
+                      precision="18" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[product_id]"
+                      dataType="numeric"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[product_id]"
+                      name="product_id"
+                      precision="18" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_id]"
+                      dataType="numeric"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_id]"
+                      name="order_id"
+                      precision="18" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[date_id]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[date_id]"
+                      name="date_id" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_date]"
+                      dataType="dbDate"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_date]"
+                      name="order_date" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_price_subtotal]"
+                      dataType="numeric"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_price_subtotal]"
+                      name="order_price_subtotal"
+                      precision="37" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_quantity_total]"
+                      dataType="numeric"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[order_quantity_total]"
+                      name="order_quantity_total"
+                      precision="38" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact table Data Flow Task\calendar Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="calendar Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[Calendar_dim]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[Calendar_dim]) [refTable]
+where [refTable].[calendar_key] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="calendar_key" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="order_date" dataType="DT_DBDATE" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="day_of_week" dataType="DT_STR" length="30" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="day_number" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="week_number" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="month_number" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="year_number" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[date_id]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact table Data Flow Task\calendar Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  connectionManagerRefId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact table Data Flow Task\calendar Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\calendar Lookup.Inputs[Lookup Input].Columns[date_id]"
+                      cachedDataType="i4"
+                      cachedName="date_id"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[date_id]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">calendar_key</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\calendar Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Match Output].Columns[calendar_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Match Output].Columns[calendar_key]"
+                      name="calendar_key"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">calendar_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\calendar Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact table Data Flow Task\calendar Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact table Data Flow Task\customer Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="customer Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[Customers_dim]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[Customers_dim]) [refTable]
+where [refTable].[customer_key] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="customer_key" dataType="DT_NUMERIC" length="0" precision="18" scale="0" codePage="0"/&gt;&lt;referenceColumn name="customer_fname" dataType="DT_STR" length="25" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_lname" dataType="DT_STR" length="25" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_email" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_password" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_street" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_city" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_state" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="customer_zipcode" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[customer_id]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact table Data Flow Task\customer Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  connectionManagerRefId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact table Data Flow Task\customer Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\customer Lookup.Inputs[Lookup Input].Columns[customer_id]"
+                      cachedDataType="numeric"
+                      cachedName="customer_id"
+                      cachedPrecision="18"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[customer_id]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">customer_key</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\customer Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Match Output].Columns[customer_key]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Match Output].Columns[customer_key]"
+                      name="customer_key"
+                      precision="18"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">customer_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\customer Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact table Data Flow Task\customer Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact table Data Flow Task\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Amazon_retail_fact]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact table Data Flow Task\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  connectionManagerRefId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[order_date]"
+                      cachedDataType="dbDate"
+                      cachedName="order_date"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_date]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_date]" />
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[order_price_subtotal]"
+                      cachedDataType="numeric"
+                      cachedName="order_price_subtotal"
+                      cachedPrecision="37"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_price_subtotal]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_price_subtotal]" />
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[order_quantity_total]"
+                      cachedDataType="numeric"
+                      cachedName="order_quantity_total"
+                      cachedPrecision="38"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_quantity_total]"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_quantity_total]" />
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[calendar_key]"
+                      cachedDataType="i4"
+                      cachedName="calendar_key"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[calendar_key]"
+                      lineageId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Match Output].Columns[calendar_key]" />
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[customer_key]"
+                      cachedDataType="numeric"
+                      cachedName="customer_key"
+                      cachedPrecision="18"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[customer_key]"
+                      lineageId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Match Output].Columns[customer_key]" />
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[product_key]"
+                      cachedDataType="numeric"
+                      cachedName="product_key"
+                      cachedPrecision="18"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[product_key]"
+                      lineageId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Match Output].Columns[product_key]" />
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[order_key]"
+                      cachedDataType="numeric"
+                      cachedName="order_key"
+                      cachedPrecision="18"
+                      externalMetadataColumnId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_key]"
+                      lineageId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Match Output].Columns[order_key]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[customer_key]"
+                      dataType="numeric"
+                      name="customer_key"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[product_key]"
+                      dataType="numeric"
+                      name="product_key"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_key]"
+                      dataType="numeric"
+                      name="order_key"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[calendar_key]"
+                      dataType="i4"
+                      name="calendar_key" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_date]"
+                      dataType="dbDate"
+                      name="order_date" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_price_subtotal]"
+                      dataType="numeric"
+                      name="order_price_subtotal"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[order_quantity_total]"
+                      dataType="i4"
+                      name="order_quantity_total" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact table Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact table Data Flow Task\Orders Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Orders Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[Orders_dim]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[Orders_dim]) [refTable]
+where [refTable].[order_key] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="order_key" dataType="DT_NUMERIC" length="0" precision="18" scale="0" codePage="0"/&gt;&lt;referenceColumn name="order_status" dataType="DT_STR" length="25" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_id]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact table Data Flow Task\Orders Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  connectionManagerRefId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact table Data Flow Task\Orders Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\Orders Lookup.Inputs[Lookup Input].Columns[order_id]"
+                      cachedDataType="numeric"
+                      cachedName="order_id"
+                      cachedPrecision="18"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[order_id]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">order_key</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\Orders Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Match Output].Columns[order_key]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Match Output].Columns[order_key]"
+                      name="order_key"
+                      precision="18"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">order_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\Orders Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact table Data Flow Task\Orders Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\fact table Data Flow Task\Product Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Product Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[Products_dim]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[Products_dim]) [refTable]
+where [refTable].[product_key] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="product_key" dataType="DT_NUMERIC" length="0" precision="18" scale="0" codePage="0"/&gt;&lt;referenceColumn name="product_name" dataType="DT_STR" length="100" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="product_image" dataType="DT_STR" length="200" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="product_price" dataType="DT_NUMERIC" length="0" precision="18" scale="0" codePage="0"/&gt;&lt;referenceColumn name="category_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="department_name" dataType="DT_STR" length="50" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[product_id]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\fact table Data Flow Task\Product Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  connectionManagerRefId="Package.ConnectionManagers[BASIT-PC\SQLEXPRESS.TRIAL1]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\fact table Data Flow Task\Product Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\fact table Data Flow Task\Product Lookup.Inputs[Lookup Input].Columns[product_id]"
+                      cachedDataType="numeric"
+                      cachedName="product_id"
+                      cachedPrecision="18"
+                      lineageId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output].Columns[product_id]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">product_key</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\Product Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Match Output].Columns[product_key]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Match Output].Columns[product_key]"
+                      name="product_key"
+                      precision="18"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">product_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\fact table Data Flow Task\Product Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\fact table Data Flow Task\Product Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\fact table Data Flow Task.Paths[Lookup Match Output]"
+              endId="Package\fact table Data Flow Task\customer Lookup.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\fact table Data Flow Task\calendar Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact table Data Flow Task.Paths[Lookup Match Output1]"
+              endId="Package\fact table Data Flow Task\Product Lookup.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\fact table Data Flow Task\customer Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact table Data Flow Task.Paths[Lookup Match Output2]"
+              endId="Package\fact table Data Flow Task\Orders Lookup.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\fact table Data Flow Task\Product Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact table Data Flow Task.Paths[Lookup Match Output3]"
+              endId="Package\fact table Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Lookup Match Output"
+              startId="Package\fact table Data Flow Task\Orders Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\fact table Data Flow Task.Paths[OLE DB Source Output]"
+              endId="Package\fact table Data Flow Task\calendar Lookup.Inputs[Lookup Input]"
+              name="OLE DB Source Output"
+              startId="Package\fact table Data Flow Task\Amazon_OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="203,42"
+          Id="Package\fact table Data Flow Task"
+          TopLeft="209,89" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\fact table Data Flow Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\fact table Data Flow Task\customer Lookup"
+          TopLeft="224,169" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\fact table Data Flow Task\Product Lookup"
+          TopLeft="251,240" />
+        <NodeLayout
+          Size="160,42"
+          Id="Package\fact table Data Flow Task\calendar Lookup"
+          TopLeft="197,95" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\fact table Data Flow Task\OLE DB Destination"
+          TopLeft="250,431.25" />
+        <NodeLayout
+          Size="203,42"
+          Id="Package\fact table Data Flow Task\Amazon_OLE DB Source"
+          TopLeft="200,31" />
+        <NodeLayout
+          Size="152,42"
+          Id="Package\fact table Data Flow Task\Orders Lookup"
+          TopLeft="270,325" />
+        <EdgeLayout
+          Id="Package\fact table Data Flow Task.Paths[Lookup Match Output]"
+          TopLeft="277,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="28.5,32"
+              Start="0,0"
+              End="28.5,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12"
+                    Point2="0,16"
+                    Point3="4,16" />
+                  <mssgle:LineSegment
+                    End="24.5,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="24.5,16"
+                    Point2="28.5,16"
+                    Point3="28.5,20" />
+                  <mssgle:LineSegment
+                    End="28.5,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-33.94138671875,21,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact table Data Flow Task.Paths[OLE DB Source Output]"
+          TopLeft="301.5,73">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="55.5,43"
+              Start="0,0"
+              End="48,43">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,39" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,39"
+                    Point2="0,43"
+                    Point3="4,43" />
+                  <mssgle:LineSegment
+                    End="48,43" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact table Data Flow Task.Paths[Lookup Match Output3]"
+          TopLeft="342.25,367">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,64.25"
+              Start="0,0"
+              End="0,56.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,56.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,22.5703125,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact table Data Flow Task.Paths[Lookup Match Output2]"
+          TopLeft="329,282">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="17,43"
+              Start="0,0"
+              End="17,35.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.5"
+                    Point2="0,21.5"
+                    Point3="4,21.5" />
+                  <mssgle:LineSegment
+                    End="13,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="13,21.5"
+                    Point2="17,21.5"
+                    Point3="17,25.5" />
+                  <mssgle:LineSegment
+                    End="17,35.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-39.69138671875,26.5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\fact table Data Flow Task.Paths[Lookup Match Output1]"
+          TopLeft="305.5,211">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="23.5,29"
+              Start="0,0"
+              End="23.5,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.5"
+                    Point2="0,14.5"
+                    Point3="4,14.5" />
+                  <mssgle:LineSegment
+                    End="19.5,14.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="19.5,14.5"
+                    Point2="23.5,14.5"
+                    Point3="23.5,18.5" />
+                  <mssgle:LineSegment
+                    End="23.5,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-36.44138671875,19.5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact table Data Flow Task\customer Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[Customers_dim]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact table Data Flow Task\Product Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[Products_dim]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact table Data Flow Task\calendar Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[Calendar_dim]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact table Data Flow Task\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact table Data Flow Task\Amazon_OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\fact table Data Flow Task\Orders Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:string">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[Orders_dim]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:string">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

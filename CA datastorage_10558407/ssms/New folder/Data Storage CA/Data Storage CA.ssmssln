@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# SQL Server Management Studio Solution File, Format Version 18.00
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "Data Storage CA", "Data Storage CA\Data Storage CA.ssmssqlproj", "{D2DC731C-B6F1-44C8-BF42-082247A44BBA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2DC731C-B6F1-44C8-BF42-082247A44BBA}.Default|Default.ActiveCfg = Default
+		{17063EEA-D3E9-448E-A9D7-69AC4DE31B02}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5CED9E7F-BAAB-4400-A8A0-AC411BE811D8}
+	EndGlobalSection
+EndGlobal
